@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -12,26 +13,60 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", "\"https://api.thecatapi.com/v1/breeds/\""
+        buildConfigField "String", "API_KEY", "\"d7e6bb91-36d6-4997-8c2d-f7d5a39ead52/\""
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.core:core-ktx:$rootProject.coreKtx"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayout"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerview"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.swiperefreshlayout"
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+    // UI
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    //retrofit && okhttp
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    //picasso
+    implementation "com.squareup.picasso:picasso:$rootProject.picasso"
+    //okhttp
+    implementation("com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion")
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    /*com.jakewharton.timber*/
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+    /*multidex*/
+    implementation "androidx.multidex:multidex:$rootProject.multidex"
+    // Room components
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    //testing
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
 }
