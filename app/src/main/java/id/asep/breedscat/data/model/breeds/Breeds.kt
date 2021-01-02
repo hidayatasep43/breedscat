@@ -1,11 +1,14 @@
 package id.asep.breedscat.data.model.breeds
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 @Entity
+@Parcelize
 data class Breeds(
 	@PrimaryKey
     @SerializedName("id") val id: String,
@@ -48,4 +51,4 @@ data class Breeds(
     @SerializedName("image") val image: Image?,
 	@Embedded
     @SerializedName("weight") val weight: Weight?
-)
+) : Parcelable
