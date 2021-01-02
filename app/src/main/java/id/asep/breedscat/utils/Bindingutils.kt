@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
@@ -50,6 +51,19 @@ fun showRefresh(swipeRefreshLayout: SwipeRefreshLayout, resource: MediatorLiveDa
         swipeRefreshLayout.isRefreshing = true
     } else {
         swipeRefreshLayout.isRefreshing = false
+    }
+}
+
+@BindingAdapter("setImageDetailBreeds")
+fun setImageDetailBreeds(imageView: ImageView, breedsLiveData: LiveData<Breeds?>) {
+    if (breedsLiveData.value?.image != null && !breedsLiveData.value?.image!!.url.isNullOrEmpty()) {
+        Picasso.get()
+            .load(breedsLiveData.value?.image!!.url)
+            .placeholder(R.drawable.ic_placeholder)
+            .error(R.drawable.ic_placeholder)
+            .into(imageView)
+    } else {
+        imageView.setImageResource(R.drawable.ic_placeholder)
     }
 }
 

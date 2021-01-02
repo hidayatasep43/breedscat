@@ -55,7 +55,8 @@ class ListBreedsActivity : AppCompatActivity(), BreedsAdapter.BreedsItemClickLis
     }
 
     override fun onBreedsItemClicked(breeds: Breeds) {
-
+        val intent = DetailBreedsActivity.getIntent(this, breeds)
+        startActivity(intent)
     }
 
 }

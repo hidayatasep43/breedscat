@@ -3,4 +3,18 @@
     <string name="title_breeds">Breeds</string>
     <string name="title_empty_breeds">Breeds is empty</string>
     <string name="desc_empty_breeds">Breeds not found. Please try again later</string>
+    <string name="text_origin">Origin</string>
+    <string name="text_temperament">Temperament</string>
+    <string name="text_breed_characteristics">Breed Characteristics</string>
+    <string name="text_adaptability">Adaptability</string>
+    <string name="text_affection_level">Affection Level</string>
+    <string name="text_child_friendly">Child Friendly</string>
+    <string name="text_dog_friendly">Dog Friendly</string>
+    <string name="text_energy_level">Energy Level</string>
+    <string name="text_grooming">Grooming</string>
+    <string name="text_health_issues">Health Issues</string>
+    <string name="text_intelligence">Intelligence</string>
+    <string name="text_shedding_level">Shedding Level</string>
+    <string name="text_social_needs">Social Needs</string>
+    <string name="text_stranger_friendly">Stranger Friendly</string>
 </resources>

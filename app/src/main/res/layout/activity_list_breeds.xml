@@ -37,7 +37,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/title_breeds"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/font_title"
+                    />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
