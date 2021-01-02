@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import id.asep.breedscat.data.model.Resource
 import kotlinx.coroutines.*
 import retrofit2.Response
+import timber.log.Timber
 import java.lang.Exception
 import kotlin.coroutines.coroutineContext
 
@@ -20,22 +21,27 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
             result.value = Resource.loading(null)
         }
         CoroutineScope(coroutineContext).launch(supervisorJob) {
-            val dbResult = loadFromDb()
-            if (shouldFetch(dbResult)){
+            if (shouldFetch()){
                 try {
-                    fetchFromNetwork(dbResult)
+                    fetchFromNetwork()
                 } catch (e:Exception) {
-                    setResponseFromDB(e.toString(), dbResult)
+                    val dbResult = loadFromDb()
+                    var errorMessage = e.localizedMessage
+                    if (errorMessage == null) {
+                        errorMessage = e.toString()
+                    }
+                    setValue(Resource.error(errorMessage, dbResult))
                 }
             } else {
+                val dbResult = loadFromDb()
                 setValue(Resource.success(dbResult, null))
             }
         }
         return this
     }
 
-    private suspend fun fetchFromNetwork(dbResult: ResultType) {
-        setValue(Resource.loading(dbResult))
+    private suspend fun fetchFromNetwork() {
+        setValue(Resource.loading(null))
         val response = createCall()
         if (response.isSuccessful) {
             val body = response.body()
@@ -44,7 +50,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
             } else {
                 val resultResponse = processResponse(body)
                 setValue(Resource.success(resultResponse, null))
-                saveCallResult(resultResponse)
+                try {
+                    saveCallResult(resultResponse)
+                } catch (e:Exception) {
+                    Timber.e(e.localizedMessage)
+                }
             }
         } else {
             val msg = response.errorBody()?.string()
@@ -53,12 +63,9 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
             } else {
                 msg
             }
-            setResponseFromDB(errorMsg, dbResult)
+            val dbResult = loadFromDb()
+            setValue(Resource.error(errorMsg, dbResult))
         }
-    }
-
-    private fun setResponseFromDB(errorMsg: String, dbResult: ResultType) {
-        setValue(Resource.success(dbResult, errorMsg))
     }
 
     @MainThread
@@ -80,7 +87,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
     abstract suspend fun createCall(): Response<RequestType>
 
     @MainThread
-    protected abstract fun shouldFetch(data: ResultType?): Boolean
+    protected abstract fun shouldFetch(): Boolean
 
     @MainThread
     protected abstract suspend fun loadFromDb(): ResultType

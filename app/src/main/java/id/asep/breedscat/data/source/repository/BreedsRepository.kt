@@ -30,7 +30,7 @@ class BreedsRepository (private val breedsDAO: BreedsDAO, private val breedsServ
                 return breedsService.getBreeds()
             }
 
-            override fun shouldFetch(data: List<Breeds>?): Boolean {
+            override fun shouldFetch(): Boolean {
                 return true
             }
 
