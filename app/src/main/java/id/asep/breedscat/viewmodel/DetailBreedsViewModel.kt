@@ -13,14 +13,23 @@ import kotlinx.coroutines.launch
 * for Rolling Glory
 * you can contact me at hidayatasep@rollingglory.com
 */
-class DetailBreedsViewModel(val breeds: Breeds) : ViewModel() {
+class DetailBreedsViewModel(val breedsId: String, val breedsRepository: BreedsRepository) : ViewModel() {
 
-    private var _breedsLiveData = MutableLiveData<Breeds?>()
-    val breedsLiveData: LiveData<Breeds?>
-        get() = _breedsLiveData
+    private var _breedsLiveData: LiveData<Resource<Breeds?>> = MutableLiveData()
+    val breedsLiveData = MediatorLiveData<Resource<Breeds?>>()
 
     init {
-        _breedsLiveData.value = breeds
+        getBreeds()
+    }
+
+    fun getBreeds() {
+        viewModelScope.launch {
+            breedsLiveData.removeSource(_breedsLiveData)
+            _breedsLiveData = breedsRepository.getBreeds(breedsId)
+            breedsLiveData.addSource(_breedsLiveData) {
+                breedsLiveData.value = it
+            }
+        }
     }
 
 }

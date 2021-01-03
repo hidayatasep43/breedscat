@@ -1,9 +1,7 @@
 package id.asep.breedscat.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.*
 import id.asep.breedscat.data.model.Resource
-import id.asep.breedscat.data.model.Status
 import id.asep.breedscat.data.model.breeds.Breeds
 import id.asep.breedscat.data.source.repository.BreedsRepository
 import kotlinx.coroutines.launch
@@ -19,13 +17,13 @@ class ListBreedsViewModel(val breedsRepository: BreedsRepository): ViewModel() {
     val breedsLiveData = MediatorLiveData<Resource<List<Breeds>>>()
 
     init {
-        getBreeds()
+        getListBreeds()
     }
 
-    fun getBreeds() {
+    fun getListBreeds() {
         viewModelScope.launch {
             breedsLiveData.removeSource(_breedsLiveData)
-            _breedsLiveData = breedsRepository.getBreeds()
+            _breedsLiveData = breedsRepository.getAllBreeds()
             breedsLiveData.addSource(_breedsLiveData) {
                 breedsLiveData.value = it
             }

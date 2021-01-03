@@ -3,6 +3,7 @@ package id.asep.breedscat.utils
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -55,15 +56,75 @@ fun showRefresh(swipeRefreshLayout: SwipeRefreshLayout, resource: MediatorLiveDa
 }
 
 @BindingAdapter("setImageDetailBreeds")
-fun setImageDetailBreeds(imageView: ImageView, breedsLiveData: LiveData<Breeds?>) {
-    if (breedsLiveData.value?.image != null && !breedsLiveData.value?.image!!.url.isNullOrEmpty()) {
-        Picasso.get()
-            .load(breedsLiveData.value?.image!!.url)
-            .placeholder(R.drawable.ic_placeholder)
-            .error(R.drawable.ic_placeholder)
-            .into(imageView)
+fun setImageDetailBreeds(imageView: ImageView, breedsLiveData: MediatorLiveData<Resource<Breeds>>) {
+    if ((breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY)
+        && breedsLiveData.value!!.data != null) {
+        if (breedsLiveData.value?.data?.image != null && !breedsLiveData.value?.data!!.image!!.url.isNullOrEmpty()) {
+            Picasso.get()
+                .load(breedsLiveData.value?.data!!.image!!.url)
+                .placeholder(R.drawable.ic_placeholder)
+                .error(R.drawable.ic_placeholder)
+                .into(imageView)
+        } else {
+            imageView.setImageResource(R.drawable.ic_placeholder)
+        }
+    }
+}
+
+@BindingAdapter("showDetailView")
+fun showDetailView(view: View, breedsLiveData: MediatorLiveData<Resource<Breeds?>>) {
+    if (breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY) {
+        if (breedsLiveData.value!!.data != null) {
+            if (view.visibility == View.GONE) {
+                view.visibility = View.VISIBLE
+            }
+        }
+    }
+}
+
+@BindingAdapter("showRefreshDetailBreeds")
+fun showRefreshDetailBreeds(swipeRefreshLayout: SwipeRefreshLayout, resource:MediatorLiveData<Resource<Breeds?>>) {
+    if (resource.value?.status == Status.LOADING) {
+        swipeRefreshLayout.isRefreshing = true
     } else {
-        imageView.setImageResource(R.drawable.ic_placeholder)
+        swipeRefreshLayout.isRefreshing = false
+    }
+}
+
+@BindingAdapter("setTitleDetailBreeds")
+fun setTitleDetailBreeds(textView: TextView, breedsLiveData:MediatorLiveData<Resource<Breeds?>>) {
+    if (breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY) {
+        if (breedsLiveData.value!!.data != null) {
+            textView.text = breedsLiveData.value!!.data!!.name
+        }
+    }
+}
+
+@BindingAdapter("setDescDetailBreeds")
+fun setDescDetailBreeds(textView: TextView, breedsLiveData:MediatorLiveData<Resource<Breeds?>>) {
+    if (breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY) {
+        if (breedsLiveData.value!!.data != null) {
+            textView.text = breedsLiveData.value!!.data!!.description
+        }
+    }
+}
+
+
+@BindingAdapter("setOriginDetailBreeds")
+fun setOriginDetailBreeds(textView: TextView, breedsLiveData:MediatorLiveData<Resource<Breeds?>>) {
+    if (breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY) {
+        if (breedsLiveData.value!!.data != null) {
+            textView.text = breedsLiveData.value!!.data!!.origin
+        }
+    }
+}
+
+@BindingAdapter("setTempramentDetailBreeds")
+fun setTempramentDetailBreeds(textView: TextView, breedsLiveData:MediatorLiveData<Resource<Breeds?>>) {
+    if (breedsLiveData.value?.status == Status.ERROR || breedsLiveData.value?.status == Status.SUCCESS || breedsLiveData.value?.status == Status.EMPTY) {
+        if (breedsLiveData.value!!.data != null) {
+            textView.text = breedsLiveData.value!!.data!!.temperament
+        }
     }
 }
 

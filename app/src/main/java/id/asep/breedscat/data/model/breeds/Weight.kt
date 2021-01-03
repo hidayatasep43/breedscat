@@ -6,6 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Weight (
-	@SerializedName("imperial") val imperial : String,
-	@SerializedName("metric") val metric : String
+	@SerializedName("imperial") val imperial : String?,
+	@SerializedName("metric") val metric : String?
 ): Parcelable

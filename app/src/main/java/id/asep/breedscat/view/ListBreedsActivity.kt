@@ -1,7 +1,6 @@
 package id.asep.breedscat.view
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,7 +13,6 @@ import id.asep.breedscat.data.model.breeds.Breeds
 import id.asep.breedscat.databinding.ActivityListBreedsBinding
 import id.asep.breedscat.utils.ViewModelUtil
 import id.asep.breedscat.viewmodel.ListBreedsViewModel
-import timber.log.Timber
 
 class ListBreedsActivity : AppCompatActivity(), BreedsAdapter.BreedsItemClickListener {
 
@@ -49,13 +47,13 @@ class ListBreedsActivity : AppCompatActivity(), BreedsAdapter.BreedsItemClickLis
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            listBreedsViewModel.getBreeds()
+            listBreedsViewModel.getListBreeds()
         }
 
     }
 
     override fun onBreedsItemClicked(breeds: Breeds) {
-        val intent = DetailBreedsActivity.getIntent(this, breeds)
+        val intent = DetailBreedsActivity.getIntent(this, breeds.id)
         startActivity(intent)
     }
 

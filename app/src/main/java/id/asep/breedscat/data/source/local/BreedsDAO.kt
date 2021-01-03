@@ -3,6 +3,7 @@ package id.asep.breedscat.data.source.local
 import androidx.room.*
 import id.asep.breedscat.data.model.breeds.Breeds
 
+
 /*
 * Created by Asep Hidayat on 12/31/2020, 
 * for Rolling Glory
@@ -13,6 +14,9 @@ interface BreedsDAO {
 
     @Query("SELECT * FROM Breeds")
     suspend fun getAllBreeds(): List<Breeds>
+
+    @Query("SELECT * FROM Breeds WHERE id = :id")
+    suspend fun getBreeds(id: String?): Breeds?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(breeds: Breeds)
