@@ -48,7 +48,9 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
             if (body == null || response.code() == 204) {
                 setValue(Resource.empty())
             } else {
-                val resultResponse = processResponse(body)
+                val resultResponse = withContext(Dispatchers.IO) {
+                    processResponse(body)
+                }
                 setValue(Resource.success(resultResponse, null))
                 try {
                     saveCallResult(resultResponse)
@@ -80,7 +82,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
 
     fun asLiveData() = result as LiveData<Resource<ResultType>>
 
-    @WorkerThread
+    @MainThread
     protected abstract suspend fun saveCallResult(item: ResultType)
 
     @MainThread
