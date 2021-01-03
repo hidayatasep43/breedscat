@@ -6,9 +6,9 @@ Kotlin android application with MVVM pattern, android architecture components, a
 ### Technology Stack
 * Programming Language :Kotlin
 * Architecture Pattern : MVVM + Repository
-* API Interface: Retrofit https://square.github.io/retrofit/
-* Image: Picasso https://square.github.io/picasso/
+* API Interface: [Retrofit](https://square.github.io/retrofit/)
+* Image: [Picasso](https://square.github.io/picasso/)
 * Threading: Coroutines
-* Local database: Room Android https://developer.android.com/topic/libraries/architecture/room
+* Local database: [Room](https://developer.android.com/topic/libraries/architecture/room)
 * Testing : Mockito, Mockwebserver
 * Another Stack: Data Binding, LiveData, ViewModel
